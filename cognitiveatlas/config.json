@@ -1,0 +1,16 @@
+[
+    {
+        "name": "The Cognitive Atlas",
+        "tag": "cognitiveatlas",
+        "corpus": "False",
+        "terms": "True",
+        "dependencies": {
+                          "python": [ 
+                                     "cognitiveatlas"
+                                    ],
+        "arguments": "",
+        "contributors": ["Vanessa Sochat"], 
+        "doi": "10.1038/nmeth.1635",
+ 
+   }
+]

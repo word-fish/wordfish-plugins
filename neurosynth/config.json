@@ -1,0 +1,22 @@
+[
+    {
+        "name": "NeuroSynth Database",
+        "tag": "neurosynth",
+        "corpus": "True",
+        "terms": "True",
+        "dependencies": {
+                          "python": [ 
+                                     "neurosynth",
+                                     "pandas"
+                                    ],
+                          "plugins": ["pubmed"]
+                              },
+        "arguments": {
+                       "corpus":"email"
+                     },
+        "contributors": ["Vanessa Sochat"], 
+        "doi": "10.1038/nmeth.1635",
+ 
+   }
+]
+

@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Wikipedia",
+        "tag": "wikipedia",
+        "corpus": "True",
+        "terms": "False",
+        "dependencies": {
+                          "python": [ 
+                                     "wikipedia",
+                                     "pandas"
+                                    ],
+        "arguments": {"corpus":"pages"},
+        "contributors": ["Vanessa Sochat"], 
+        "doi": "",
+ 
+   }
+]

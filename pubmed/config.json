@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Pubmed",
+        "tag": "pubmed",
+        "corpus": "True",
+        "terms": "False",
+        "dependencies": {
+                          "python": [ 
+                                     "Bio"
+                                    ],
+        "arguments": {
+                       "corpus":"email"
+                      },
+        "contributors": ["Vanessa Sochat"], 
+        "doi": "http://www.pubmed.org",
+ 
+   }
+]
