@@ -1,17 +1,9 @@
-#!/usr/bin/env python
+'''
+cognitiveatlas
+plugin for deepdive python
+THESE FUNCTIONS ARE NOT WRITTEN / TESTED YET
 
-"""
-
-CognitiveAtlas: part of the brainbehavior python package
-
-BrainBehavior: This module will work with three databases that
-combined can make inferences about disorders and behaviors:
-
-SAMPLE USAGE: Please see README included with package
-
-
-"""
-
+'''
 from textblob import Word
 from textblob.wordnet import Synset
 import pickle
@@ -21,10 +13,6 @@ import json
 import re
 import os
 
-__author__ = ["Vanessa Sochat (vsochat@stanford.edu)"]
-__version__ = "$Revision: 1.0 $"
-__date__ = "$Date: 2015/07/24 $"
-__license__ = "Python"
 
 # Cognitive Atlas Functions---------------------------------------------------------
 

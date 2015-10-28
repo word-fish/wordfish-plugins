@@ -1,20 +1,9 @@
-#!/usr/bin/env python
+'''
+neurovault
+plugin for deepdive python
+THESE FUNCTIONS ARE NOT WRITTEN / TESTED YET
 
-"""
-
-NeuroVault: part of the brainbehavior python package
-
-BrainBehavior: This module will work with three databases that 
-combined can make inferences about disorders and behaviors:
-
-NeuroVault: functional and structural group analyses
-Cognitive Atlas: ontology of cognitive concepts, tasks, disorder, collections
-NeuroSynth: mining literature for behavioral concepts to produce brain maps
-
-SAMPLE USAGE: Please see README included with package
-
-
-"""
+'''
 
 from utils import DataJson
 import string
@@ -22,11 +11,6 @@ import urllib2
 import json
 import numpy as np
 from utils import DataJson
-
-__author__ = ["Vanessa Sochat (vsochat@stanford.edu)","Matthew Sacchet (msacchet@stanford.edu)"]
-__version__ = "$Revision: 1.0 $"
-__date__ = "$Date: 2011/09/09 $"
-__license__ = "Python"
 
 
 class NeuroVault:

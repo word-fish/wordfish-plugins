@@ -1,23 +1,15 @@
-#!/usr/bin/env python
+'''
 
-"""
+wikipedia:
+ 
+part of the deepdive python package: parsing of term data structures into formats for deepdive
+this set of functions is for parsing wikipedia
 
-Wikipedia: part of the brainbehavior python package
+'''
 
-BrainBehavior: This module will work with three databases that
-combined can make inferences about disorders and behaviors.
-
-SAMPLE USAGE: Please see README included with package
-
-
-"""
 from wikipedia import search, page
 import re
 
-__author__ = ["Vanessa Sochat (vsochat@stanford.edu)"]
-__version__ = "$Revision: 1.0 $"
-__date__ = "$Date: 2015/07/25 $"
-__license__ = "Python"
 
 def get_page(searchterm):
     # Assume the user knows the specific page, it will be first result

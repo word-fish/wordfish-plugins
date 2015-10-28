@@ -1,17 +1,8 @@
-#!/usr/bin/env python
+'''
 
-"""
-
-rdoc: part of the brainbehavior python package to work with rdoc matrix
-
-BrainBehavior: This module will work with three databases that 
-combined can make inferences about disorders and behaviors:
-
-NeuroVault: functional and structural group analyses
-Cognitive Atlas: ontology of cognitive concepts, tasks, disorder, collections
-NeuroSynth: mining literature for behavioral concepts to produce brain maps
-
-SAMPLE USAGE: Please see README included with package
+rdoc: 
+part of the deepdive python package: parsing of term data structures into formats for deepdive
+this set of functions is for parsing rdoc data
 
 rdoc:   Methods for working with on and offline pubmed data
        .get_xml_text:  Get raw text from pubmed xml file.  Uses:
@@ -20,7 +11,7 @@ rdoc:   Methods for working with on and offline pubmed data
        .find_construct: Searches for rdoc features in paper
        .extract_sentences: return dictionary ["methodname","sentence it's in!'"]
 
-"""
+'''
 
 import re
 from pubmed import extract_xml_compressed, read_xml, recursive_text_extract, get_xml_tree
@@ -28,11 +19,6 @@ from lxml import etree
 import pandas as pd
 import tarfile
 import os
-
-__author__ = ["Vanessa Sochat (vsochat@stanford.edu)"]
-__version__ = "$Revision: 1.0 $"
-__date__ = "$Date: 2011/09/09 $"
-__license__ = "Python"
 
 
 # RDoC ---------------------------------------------------------------------------
