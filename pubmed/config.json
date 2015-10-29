@@ -7,7 +7,8 @@
         "dependencies": {
                           "python": [ 
                                      "Bio"
-                                    ],
+                                    ]
+                        },
         "arguments": {
                        "corpus":"email"
                       },

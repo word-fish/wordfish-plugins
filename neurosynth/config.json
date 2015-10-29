@@ -10,7 +10,7 @@
                                      "pandas"
                                     ],
                           "plugins": ["pubmed"]
-                              },
+                        },
         "arguments": {
                        "corpus":"email"
                      },
