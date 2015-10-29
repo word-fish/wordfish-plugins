@@ -6,7 +6,7 @@
         "terms": "False",
         "dependencies": { "python": ["praw","pandas"]},
         "arguments": {"corpus":"boards"},
-        "contributors": ["Vanessa Sochat"], 
+        "contributors": ["Vanessa Sochat"],
         "doi": ""
     }
 ]
