@@ -6,7 +6,7 @@
         "terms": "False",
         "dependencies": {
                           "python": [ 
-                                     "Bio"
+                                     "biopython"
                                     ]
                         },
         "arguments": {

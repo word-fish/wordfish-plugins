@@ -6,11 +6,13 @@ functions for working with neurosynth database
 
 from neurosynth.base.dataset import Dataset
 from neurosynth.base.dataset import FeatureTable
+from deepdive.plugins.pubmed.functions import Pubmed
 from neurosynth.base import mask
 from neurosynth.base import imageutils
 from neurosynth.analysis import meta
 from neurosynth.analysis import decode
 from deepdive.vm import download_repo
+from deepdive.utils import untar
 import nibabel as nb
 from nibabel import nifti1
 import pandas
@@ -18,27 +20,47 @@ import re
 import os
 import sys
 
+# IMPORTS FOR ALL PLUGINS
+from deepdive.corpus import save_sentences
+from deepdive.terms import save_terms
+
 # REQUIRED DEEPDIVE PYTHON FUNCTIONS
-def extract_text(email="deepdive@stanford.edu"):
+def extract_text(email="deepdive@stanford.edu",output_dir):
 
     features,database = download_data()
-    df = pandas.read_csv(database,sep="\t")
-    pmids = df.id.unique().tolist()
+    pmids = database.id.unique().tolist()
     print "NeuroSynth database has %s unique PMIDs" %(len(pmids))
 
-# download abstract text
-email = "vsochat@stanford.edu"
-pm = Pubmed(email,pmc=False)
-articles1 = pm.get_many_articles(pmids[:10000])
-articles2 = pm.get_many_articles(pmids[10000:])
-articles = articles1.copy()
-articles.update(articles2)
+    # download abstract texts
+    print "Downloading pubmed articles (this may take a while)"
+    articles = []
+    try:
+        iters = numpy.ceil(len(pmids)/5000.0)
+        start = 0
+        for i in range(iters):
+            if i == iters:
+                end = len(pmids)
+            else:
+                end = iters*5000
+            arts = get_articles(pmids[start:end])
+            articles.update(arts)
+    except URLError:
+        print "URLError: There is a problem with your internet connection."
+        sys.exit(32)
 
-if not os.path.exists("articles.pkl"):
-    pickle.dump(articles,open("articles.pkl","wb"))
+    # Prepare dictionary with key [pmid] and value [text]
+    corpus_input = dict()
+    for pmid,article in articles.iteritems():
+        corpus_input[pmid] = article.getAbstract()
+
+    # Save articles to text files in output folder     
+    save_sentences(corpus_input,output_dir=output_dir)
 
 
-def extract_terms():
+def extract_terms(output_dir):
+    features,database = download_data()
+    terms = database.get_feature_names()
+    save_terms(terms,output_dir=output_dir)
 
 
 def download_data(destination=None,read=True):
@@ -54,11 +76,13 @@ def download_data(destination=None,read=True):
     database,features: paths
         full paths to database and features files  
     '''
+    print "Downloading neurosynth database..."
+
     if destination==None:
         destination = download_repo(repo_url="https://github.com/neurosynth/neurosynth-data")
     else:
-        download_repo(repo_url="https://github.com/neurosynth/neurosynth-data",destination=destination)
-    os.system("tar -xzvf %s/current_data.tar.gz" %(destination))
+        download_repo(repo_url="https://github.com/neurosynth/neurosynth-data",tmpdir=destination)
+    untar("%s/current_data.tar.gz" %(destination),destination)
     
     features = "%s/features.txt" %(destination)
     database = "%s/database.txt" %(destination)
@@ -70,7 +94,10 @@ def download_data(destination=None,read=True):
     return features,database
 
 
+
+
 # NeuroSynth Functions--------------------------------------------------------------
+# Not sure if I need these, might refactor
 class NeuroSynth:
 
     def __init__(self,repo_path):
