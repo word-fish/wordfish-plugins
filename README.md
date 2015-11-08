@@ -96,8 +96,7 @@ For all of the above, the functions in functions.py and the config.json, don't w
 
 #### Best Practices
 
-- If any of your methods take a long time to run, please print to the screen what is going on, and how long it might take, as a courtesy to the user.
-
+- You should generally print to the screen what is going on, and how long it might take, as a courtesy to the user, if something needs review or debugging.
 
       "Extracting relationships, will take approximately 3 minutes"
 

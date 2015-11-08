@@ -4,6 +4,7 @@
         "tag": "neurosynth",
         "corpus": "True",
         "terms": "True",
+        "relationships":"True",
         "dependencies": {
                           "python": [ 
                                      "neurosynth",

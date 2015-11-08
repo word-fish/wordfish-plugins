@@ -4,6 +4,7 @@
         "tag": "pubmed",
         "corpus": "True",
         "terms": "False",
+        "relationships":"False",
         "dependencies": {
                           "python": [ 
                                      "biopython"

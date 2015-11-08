@@ -4,6 +4,7 @@
         "tag": "rdoc",
         "corpus": "False",
         "terms": "True",
+        "relationships":"True",
         "dependencies": "",
         "arguments": "",
         "contributors": ["Vanessa Sochat"], 

@@ -4,6 +4,7 @@
         "tag": "neurovault",
         "corpus": "False",
         "terms": "False",
+        "relationships":"False",
         "dependencies": {
                           "python": [ 
                                      "pyneurovault"

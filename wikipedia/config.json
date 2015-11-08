@@ -4,6 +4,7 @@
         "tag": "wikipedia",
         "corpus": "True",
         "terms": "False",
+        "relationships":"False",
         "dependencies": {
                           "python": [ 
                                      "wikipedia",

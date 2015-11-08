@@ -4,6 +4,7 @@
         "tag": "cognitiveatlas",
         "corpus": "False",
         "terms": "True",
+        "relationships":"True",
         "dependencies": {
                           "python": [ 
                                      "cognitiveatlas"
