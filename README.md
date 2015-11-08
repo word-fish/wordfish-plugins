@@ -1,5 +1,14 @@
 # Plugins
 
+  >>   If pulling a thread of meaning from woven text <br>
+  >>   is that which your heart does wish. <br>
+  >>   Not so absurd or seemingly complex,  <br>
+  >>   if you befriend a tiny word fish. <br>
+
+<div style="float: right">
+    <img src="https://raw.githubusercontent.com/vsoch/wordfish-python/master/doc/img/wordfish_smile.png" alt="wordfish" title="Wordfish" style="float:right"/>
+</div>
+
 ** under development **
 
 These are plugins that can generate corpus or terminology for use with [wordfish python](http://www.github.com/vsoch/wordfish-python). Each plugin should have its own folder. Plugin requirements are determined from the config.json, and deployed to user-specific applications with these modules installed. Plugins can have two use cases, and for each would include the following functions.
