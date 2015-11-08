@@ -27,7 +27,10 @@ from wordfish.terms import save_terms
 # REQUIRED DEEPDIVE PYTHON FUNCTIONS
 def extract_text(email="deepdive@stanford.edu",output_dir):
 
-    features,database = download_data()
+    f,d = download_data()
+    features = pandas.read_csv(f,sep="\t")  
+    database = pandas.read_csv(d,sep="\t")  
+
     pmids = database.id.unique().tolist()
     print "NeuroSynth database has %s unique PMIDs" %(len(pmids))
 
@@ -57,17 +60,46 @@ def extract_text(email="deepdive@stanford.edu",output_dir):
     save_sentences(corpus_input,output_dir=output_dir)
 
 
-def extract_terms(output_file,extract_relationships=False):
+def extract_terms(output_dir,extract_relationships=False):
     features,database = download_data()
     terms = features.columns.tolist()
+    terms.pop(0)  #pmid
     if extract_relationships == True:
-        #TODO: write meta analysis idea here with maps
+        relationships=extract_relationships(terms,d,f)
     else:
         relationships=None
-    save_terms(terms,output_dir=output_dir,relationships=relationships)
+    save_terms(terms,output_dir=output_dir)
+    
+def extract_relationships(output_dir):
+
+    features,database = download_data()
+
+    relationships = []
+    print "Extracting NeuroSynth relationships..."
+    dataset = Dataset(database)
+    dataset.add_features(features)
+    image_matrix = pandas.DataFrame(columns=range(228453))
+    for t in range(len(terms)):
+        term = terms[t]
+        print "Parsing term %s, %s of %s" %(term,t,len(terms))
+        ids = dataset.get_ids_by_features(term)
+        maps = meta.MetaAnalysis(dataset,ids)
+        # Let's use reverse inference, unthresholded Z score map
+        image_matrix.loc[term] = maps.images["pFgA_z"]
+    sims = image_matrix.corr(method="pearson")
+    tuples = []
+    ids = sims.index
+    # This isn't tested yet
+    for s1 in range(len(ids)):
+        sim1 = ids[s1]
+        for s2 in range(len(ids)):
+            sim2 = ids[s2]
+            if s2>s1:
+                tuples.append((sim1,sim2,sims.loc[sim1,sim2]))
+    save_relationships(terms,output_dir=output_dir,relationships=tuples)
 
 
-def download_data(destination=None,read=True):
+def download_data(destination=None):
     '''download_data
     download neurosynth repo data to a temporary or specified destination
     return path to features and database files
@@ -90,73 +122,5 @@ def download_data(destination=None,read=True):
     
     features = "%s/features.txt" %(destination)
     database = "%s/database.txt" %(destination)
-
-    if read==True:
-        features = pandas.read_csv(features,sep="\t")  
-        database = pandas.read_csv(database,sep="\t")  
     
     return features,database
-
-
-
-
-# NeuroSynth Functions--------------------------------------------------------------
-# Not sure if I need these, might refactor
-class NeuroSynth:
-
-    def __init__(self,repo_path):
-        """Initialize Neurosynth Database"""
-        print "Initializing Neurosynth database..."
-        self.db = Dataset('%s/database.txt' %(repo_path))
-        self.db.add_features('%s/features.txt' %(repo_path))
-        self.ids = self.getIDs()
-
-    def getFeatures(self):
-        """Return features in neurosynth database"""
-        return self.db.get_feature_names()
-
-    def getIDs(self):
-        """Extract pubmed IDs or dois from Neurosynth Database"""
-        # Get all IDs in neuroSynth
-        return self.db.image_table.ids
-
-    def getAuthor(self,db,id):   
-        """Extract author names for a given pmid or doi"""
-        article = self.db.get_mappables(id)
-        meta = article[0].__dict__
-        tmp = meta['data']['authors']
-        tmp = tmp.split(",")
-        authors = [ x.strip("^ ") for x in tmp]
-        return authors
-
-    def getAuthors(self,db):
-        """Extract all author names in database"""
-        articles = db.mappables
-        uniqueAuthors = []
-            for a in articles:
-                meta = a.__dict__
-                tmp = meta['data']['authors']
-                tmp = tmp.split(",")
-                authors = [ x.strip("^ ") for x in tmp]
-                for a in authors:
-                    uniqueAuthors.append(a)
-                    uniqueAuthors = list(np.unique(uniqueAuthors))
-        return uniqueAuthors
-
-    def getPaperMeta(self,db,pmid):
-        """Extract activation points and all meta information for a particular pmid"""
-        articles = db.mappables
-        m = []
-        for a in articles:
-            tmp = a.__dict__
-            if tmp['data']['id'] == str(pmid):
-                journal = tmp['data']['journal']
-                title = tmp['data']['title']
-                year = tmp['data']['year']
-                doi = tmp['data']['doi']
-                auth = tmp['data']['authors']
-                peaks = tmp['data']['peaks']
-                pmid = tmp['data']['id']
-                tmp = (journal,title,year,doi,pmid,auth,peaks)
-                m.append(tmp)
-        return m

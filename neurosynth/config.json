@@ -8,7 +8,8 @@
                           "python": [ 
                                      "neurosynth",
                                      "pandas",
-                                     "ply"
+                                     "ply",
+                                     "sklearn"
                                     ],
                           "plugins": ["pubmed"]
                         },

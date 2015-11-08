@@ -25,9 +25,10 @@ The minimum requirement for a new plugin functions.py is as follows:
       '''
       def extract_text(output_dir):
           return None
-      def extract_terms(output_file=None,extract_relationships=False):
+      def extract_terms(output_dir=None):
           return None
-
+      def extract_relationships(output_dir=None)
+          return None
 
 #### Extract Text (from corpus)
 Should do whatever functions you need to obtain your text, and any additional python modules you need should be defined in the config.json "dependencies" --> "python" section (see below). Currently, you should obtain user input interactively, or set as a default argument, and in the future we will implement a way to obtain these values from the user who is generating the application. Your function should prepare either a dictionary (in the case of having a unique ID you want to maintain) or a list (if you don't have unique ids). For example, if we are parsing something from pubmed, our script might prepare the following data structure:
@@ -57,14 +58,58 @@ Your extract terms function should give the user an option to extract terms with
 
 
       from wordfish.terms import save_terms
-      save_terms(terms,output_file=output_file,extract_relationships=False)
+      save_terms(terms,output_dir=output_dir,extract_relationships=False)
 
-Again, the output file is passed from the script generating it, don't worry about it. What you don't see in the function call above is that there is a variable called "relationships" that is default set to None. If you have relationships defined between your terms, whether a numerical value or a string that represents some kind of semantic relationship, you can pass an additional relationships variable, with a list of tuples that describe [(source,target,relationship)]. For example:
+The structure that is returned is a simple json that defines nodes:
 
-      relationships = [("node1","node2",0.5),("node1","node2","purl.ontology.org#isPartOf")]
-      save_terms(terms,output_file=output_file,relationships=relationships)
 
-You will notice the optional input variable called `extract_relationships`. This gives the user the option to get just a list of terms, or the terms with relationships. If you don't have any relationships, then the relationships variable is set to None. Don't worry about remembering all this, we give you a starter template to fill in.
+        {"nodes":[{"name":"node1"},
+                 {"name":"node2"}]
+        }
+
+Why does this make sense? Because that can go immediately into any javascript or d3, and it's a commonly used way to render a graph.
+
+
+Again, the output file is passed from the script generating it, don't worry about it. This will save a terms.json in the terms output folder for your plugin. 
+
+#### Extract relationships
+Lots of these ontology things have relationships between terms, and so if you have some relationships that you want to define, whether a numerical value or a string that represents some kind of semantic relationship, you can. If this is the case, you should define a function called `extract_relationships` in your functions.py, and define set variable "relationships" in your config.json to True. Since relationship extraction could take a long time, we run these functions on the slurm cluster. The only thing you need to worry about is the function itself. It should take as input the same argument as `extract_terms` and within it, call the function `save_relationships` with a relationships variable that is a list of tuples that describe [(source,target,relationship)]. For example, in functions.py, within `extract_relationships`:
+
+       from wordfish.terms import save_relationships
+       relationships = [("node1","node2",0.5),("node1","node2","purl.ontology.org#isPartOf")]
+       save_relationships(terms,output_dir=output_dir,relationships=relationships)
+
+We will generate a slurm job to do this, so the user does not have to wait.
+
+
+The structure that is returned is a simple json that defines links:
+
+
+        {
+         "links": [{"source":"node1","target":"node2","value":0.5}]
+        }
+
+
+For all of the above, the functions in functions.py and the config.json, don't worry about remembering all this, we give you a starter template to fill in.
+
+
+
+#### Best Practices
+
+- If any of your methods take a long time to run, please print to the screen what is going on, and how long it might take, as a courtesy to the user.
+
+
+      "Extracting relationships, will take approximately 3 minutes"
+
+- If you need a github repo, we have a function for that:
+
+      from wordfish.vm import download_repo
+      repo_directory = download_repo(repo_url="https://github.com/neurosynth/neurosynth-data")
+
+- If you need a general temporary place to put things, use `tempfile`
+
+      tmpdir = tempfile.mkdtemp()
+
 
 ### Config.json
 Plugins will be understood by the application by way of the config.json. For example:
