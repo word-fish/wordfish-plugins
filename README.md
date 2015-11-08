@@ -96,16 +96,21 @@ For all of the above, the functions in functions.py and the config.json, don't w
 
 #### Best Practices
 
-- You should generally print to the screen what is going on, and how long it might take, as a courtesy to the user, if something needs review or debugging.
+You should generally print to the screen what is going on, and how long it might take, as a courtesy to the user, if something needs review or debugging.
+
 
       "Extracting relationships, will take approximately 3 minutes"
 
-- If you need a github repo, we have a function for that:
+
+If you need a github repo, we have a function for that:
+
 
       from wordfish.vm import download_repo
       repo_directory = download_repo(repo_url="https://github.com/neurosynth/neurosynth-data")
 
-- If you need a general temporary place to put things, use `tempfile`
+
+If you need a general temporary place to put things, use `tempfile`
+
 
       tmpdir = tempfile.mkdtemp()
 
@@ -120,6 +125,7 @@ Plugins will be understood by the application by way of the config.json. For exa
               "tag": "neurosynth",
               "corpus": "True",
               "terms": "True",
+              "relationships":"True",
               "dependencies": {
                                 "python": [ 
                                             "neurosynth",
