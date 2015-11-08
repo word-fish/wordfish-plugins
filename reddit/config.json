@@ -6,7 +6,7 @@
         "terms": "False",
         "relationships":"False",
         "dependencies": { "python": ["praw","pandas"]},
-        "arguments": {"corpus":"boards"},
+        "arguments": {"corpus":{"boards":"A list of reddit board IDS that you want to search, if not provided, a default list with different mental disorders will be used."}},
         "contributors": ["Vanessa Sochat"],
         "doi": ""
     }

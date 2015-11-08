@@ -2,7 +2,7 @@
     {
         "name": "Pubmed",
         "tag": "pubmed",
-        "corpus": "True",
+        "corpus": "False",
         "terms": "False",
         "relationships":"False",
         "dependencies": {

@@ -1,8 +1,14 @@
 '''
 
 pubmed: 
-part of the deepdive python package: parsing of term data structures into formats for deepdive
-this set of functions is for parsing pubmed data
+part of the wordnet python package: parsing of term data structures into formats for deepdive
+
+This plugin currently just works as a supplementary plugin that can be used
+to query pubmed from other plugins, since there is no definitive rule about
+what "subset" of pubmed to use, and (at least for smaller applications) I don't
+want to give the user the option to download all of pubmed.
+
+Sets of functions is for parsing pubmed data
 
 '''
 
@@ -18,6 +24,15 @@ import urllib2
 import numpy as np
 from Bio import Entrez
 from deepdive.nlp import do_stem
+
+
+def extract_text(output_dir):
+    print "Text extraction is not defined for this plugin."
+def extract_terms(output_dir):
+    print "Term extraction is not defined for this plugin."
+def extract_relationships(output_dir)
+    print "Relationship extraction is not defined for this plugin."
+
 
 # Pubmed
 class Pubmed:

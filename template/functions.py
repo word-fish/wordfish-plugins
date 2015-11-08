@@ -26,6 +26,9 @@ def extract_text(output_dir):
     # Save articles to text files in output folder     
     save_sentences(corpus_input,output_dir=output_dir)
 
+    # If not defined for the function, just delete the above,
+    # and print something silly :)
+    print "Text corpus extraction is not defined for this plugin."
 
 def extract_terms(output_dir,extract_relationships=False):
 
@@ -40,6 +43,11 @@ def extract_terms(output_dir,extract_relationships=False):
     terms = ["term1"]
 
     save_terms(terms,output_dir=output_dir)
+
+    # If not defined for the function, just delete the above,
+    # and print something silly :)
+    print "Terminology extraction is not defined for this plugin."
+
     
 def extract_relationships(output_dir):
 
@@ -51,4 +59,8 @@ def extract_relationships(output_dir):
     # Value can be a string or int
     # The terms variable is equivalent to the one needed for extract_terms
     save_relationships(terms,output_dir=output_dir,relationships=tuples)
+
+    # If not defined for the function, just delete the above,
+    # and print something silly :)
+    print "Relationship extraction is not defined for this plugin."
 

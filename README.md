@@ -33,11 +33,12 @@ The minimum requirement for a new plugin functions.py is as follows:
       functions.py
       '''
       def extract_text(output_dir):
-          return None
-      def extract_terms(output_dir=None):
-          return None
-      def extract_relationships(output_dir=None)
-          return None
+          print "Text extraction is not defined for this plugin."
+      def extract_terms(output_dir):
+          print "Term extraction is not defined for this plugin."
+      def extract_relationships(output_dir)
+          print "Relationship extraction is not defined for this plugin."
+
 
 #### Extract Text (from corpus)
 Should do whatever functions you need to obtain your text, and any additional python modules you need should be defined in the config.json "dependencies" --> "python" section (see below). Currently, you should obtain user input interactively, or set as a default argument, and in the future we will implement a way to obtain these values from the user who is generating the application. Your function should prepare either a dictionary (in the case of having a unique ID you want to maintain) or a list (if you don't have unique ids). For example, if we are parsing something from pubmed, our script might prepare the following data structure:
@@ -104,7 +105,7 @@ The structure that is returned is a simple json that defines links:
         }
 
 
-For all of the above, the functions in functions.py and the config.json, don't worry about remembering all this, we give you a starter template to fill in.
+For all of the above, if you don't have a component defined for your plugin, just have the function print something silly. And don't worry about remembering all this, you can use the provided [template](template) folder to get you started. 
 
 
 
@@ -127,6 +128,13 @@ If you need a general temporary place to put things, use `tempfile`
 
 
       tmpdir = tempfile.mkdtemp()
+
+
+While most users and clusters have internet connectivity, it cannot be assumed, and an error in attempting to access an online resource could trigger an error. If your plugin has functions that require connectivity, we have a function to check:
+
+      from wordfish.utils import has_internet_connectivity
+      if has_internet_connectivity():
+          # Do analysis
 
 
 ### Config.json
