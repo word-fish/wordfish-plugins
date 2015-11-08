@@ -1,7 +1,7 @@
 '''
 
 pubmed: 
-part of the wordnet python package: parsing of term data structures into formats for deepdive
+part of the wordnet python package: parsing of term data structures into formats for wordfish
 
 This plugin currently just works as a supplementary plugin that can be used
 to query pubmed from other plugins, since there is no definitive rule about
@@ -23,7 +23,7 @@ import string
 import urllib2
 import numpy as np
 from Bio import Entrez
-from deepdive.nlp import do_stem
+from wordfish.nlp import do_stem
 
 
 def extract_text(output_dir):

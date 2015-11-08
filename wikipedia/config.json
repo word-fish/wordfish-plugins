@@ -2,7 +2,7 @@
     {
         "name": "Wikipedia",
         "tag": "wikipedia",
-        "corpus": "True",
+        "corpus": "False",
         "terms": "False",
         "relationships":"False",
         "dependencies": {

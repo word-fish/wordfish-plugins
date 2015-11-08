@@ -2,13 +2,22 @@
 
 wikipedia:
  
-part of the deepdive python package: parsing of term data structures into formats for deepdive
+part of the wordfish python package: parsing of term data structures into formats for wordfish
 this set of functions is for parsing wikipedia
+
+Currently this plugin is a supplementary one, for use via other plugins to query wikipedia.
 
 '''
 
 from wikipedia import search, page
 import re
+
+def extract_text(output_dir):
+    print "Text extraction is not defined for this plugin."
+def extract_terms(output_dir):
+    print "Term extraction is not defined for this plugin."
+def extract_relationships(output_dir)
+    print "Relationship extraction is not defined for this plugin."
 
 
 def get_page(searchterm):
