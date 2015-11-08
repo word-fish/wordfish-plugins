@@ -6,13 +6,13 @@ functions for working with neurosynth database
 
 from neurosynth.base.dataset import Dataset
 from neurosynth.base.dataset import FeatureTable
-from deepdive.plugins.pubmed.functions import Pubmed
+from wordfish.plugins.pubmed.functions import Pubmed
 from neurosynth.base import mask
 from neurosynth.base import imageutils
 from neurosynth.analysis import meta
 from neurosynth.analysis import decode
-from deepdive.vm import download_repo
-from deepdive.utils import untar
+from wordfish.vm import download_repo
+from wordfish.utils import untar
 import nibabel as nb
 from nibabel import nifti1
 import pandas
@@ -21,8 +21,8 @@ import os
 import sys
 
 # IMPORTS FOR ALL PLUGINS
-from deepdive.corpus import save_sentences
-from deepdive.terms import save_terms
+from wordfish.corpus import save_sentences
+from wordfish.terms import save_terms
 
 # REQUIRED DEEPDIVE PYTHON FUNCTIONS
 def extract_text(email="deepdive@stanford.edu",output_dir):
@@ -57,10 +57,14 @@ def extract_text(email="deepdive@stanford.edu",output_dir):
     save_sentences(corpus_input,output_dir=output_dir)
 
 
-def extract_terms(output_dir):
+def extract_terms(output_file,extract_relationships=False):
     features,database = download_data()
-    terms = database.get_feature_names()
-    save_terms(terms,output_dir=output_dir)
+    terms = features.columns.tolist()
+    if extract_relationships == True:
+        #TODO: write meta analysis idea here with maps
+    else:
+        relationships=None
+    save_terms(terms,output_dir=output_dir,relationships=relationships)
 
 
 def download_data(destination=None,read=True):
