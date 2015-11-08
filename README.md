@@ -43,13 +43,14 @@ The minimum requirement for a new plugin functions.py is as follows:
 Should do whatever functions you need to obtain your text, and any additional python modules you need should be defined in the config.json "dependencies" --> "python" section (see below). Currently, you should obtain user input interactively, or set as a default argument, and in the future we will implement a way to obtain these values from the user who is generating the application. Your function should prepare either a dictionary (in the case of having a unique ID you want to maintain) or a list (if you don't have unique ids). For example, if we are parsing something from pubmed, our script might prepare the following data structure:
 
 
-     {"12345":"This is text from article 1 with pubmed id 12345",
+     {
+      "12345":"This is text from article 1 with pubmed id 12345",
       "12346":"This is text from article 2 with pubmed id 12346",
      }
 
 In the case that you don't have any unique ids, just put your text objects into a list:
 
-    ["This is text from article 1 with no id.",ou
+    ["This is text from article 1 with no id.",
     "This is text from article 2 with no id."]
 
 
@@ -63,21 +64,25 @@ The last line of your function should pass either the dictionary or list to the 
 The output_dir comes from the higher level script running it, so just make sure to pass it along.
 
 #### Extract terms
-Your extract terms function should give the user an option to extract terms with relationships, or not. The simplest implementation will send a list of strings to the `save_terms` function:
+The simplest implementation will send a list of strings to the `save_terms` function:
 
-
+      terms = ["term1","term2","term3"]
       from wordfish.terms import save_terms
       save_terms(terms,output_dir=output_dir,extract_relationships=False)
 
 The structure that is returned is a simple json that defines nodes:
 
 
-        {"nodes":[{"name":"node1"},
-                 {"name":"node2"}]
+        {"nodes":[{"name":"term1"},
+                 {"name":"term2"}]
         }
 
-Why does this make sense? Because that can go immediately into any javascript or d3, and it's a commonly used way to render a graph.
+If you have meta data associated with your terms, then you can make `terms` as a dictionary, with the unique id of your term as the key. The value for this dictionary should be a second dictionary (meta data for your term), and the term itself should be in the meta data variable called ["name"].
 
+      terms = {"term1_unique_id":{"name":"term1","definition":"term1 is a little fish."}}
+
+
+There are currently no constraints on the format or inclusion of meta-data, as it is not yet decided how to integrate this into the application. Why does this make sense? Because that can go immediately into any javascript or d3, and it's a commonly used way to render a graph.
 
 Again, the output file is passed from the script generating it, don't worry about it. This will save a terms.json in the terms output folder for your plugin. 
 

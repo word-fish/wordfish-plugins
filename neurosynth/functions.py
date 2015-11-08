@@ -23,8 +23,9 @@ import sys
 # IMPORTS FOR ALL PLUGINS
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
+from wordfish.terms import save_relationships
 
-# REQUIRED DEEPDIVE PYTHON FUNCTIONS
+# REQUIRED WORDFISH PYTHON FUNCTIONS
 def extract_text(email="deepdive@stanford.edu",output_dir):
 
     f,d = download_data()
@@ -60,14 +61,10 @@ def extract_text(email="deepdive@stanford.edu",output_dir):
     save_sentences(corpus_input,output_dir=output_dir)
 
 
-def extract_terms(output_dir,extract_relationships=False):
+def extract_terms(output_dir):
     features,database = download_data()
     terms = features.columns.tolist()
     terms.pop(0)  #pmid
-    if extract_relationships == True:
-        relationships=extract_relationships(terms,d,f)
-    else:
-        relationships=None
     save_terms(terms,output_dir=output_dir)
     
 def extract_relationships(output_dir):
