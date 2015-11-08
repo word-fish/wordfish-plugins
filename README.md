@@ -6,12 +6,12 @@
   >>   if you befriend a tiny word fish. <br>
 
 <div style="float: right">
-    <img src="https://raw.githubusercontent.com/vsoch/wordfish-python/master/doc/img/wordfish_smile.png" alt="wordfish" title="Wordfish" style="float:right"/>
+    <img src="https://raw.githubusercontent.com/word-fish/wordfish-python/master/doc/img/wordfish_smile.png" alt="wordfish" title="Wordfish" style="float:right"/>
 </div>
 
 ** under development **
 
-These are plugins that can generate corpus or terminology for use with [wordfish python](http://www.github.com/vsoch/wordfish-python). Each plugin should have its own folder. Plugin requirements are determined from the config.json, and deployed to user-specific applications with these modules installed. Plugins can have two use cases, and for each would include the following functions.
+These are plugins that can generate corpus or terminology for use with [wordfish python](http://www.github.com/word-fish/wordfish-python). Each plugin should have its own folder. Plugin requirements are determined from the config.json, and deployed to user-specific applications with these modules installed. Plugins can have two use cases, and for each would include the following functions.
 
  - extract_terms: function to call to return a data structure of terms
  - extract_text: function to call to return a data structure of text
@@ -167,7 +167,7 @@ Plugins will be understood by the application by way of the config.json. For exa
 
 
 ### Validation
-Plugins will be validated and loaded by [wordfish-python](http://www.github.com/vsoch/deepdive-python). Plugins will be validated with tests that ensure that output is as is expected for use with wordfish-python. When generating an application, the user will be given choice to use only the valid plugins. Validation means that they pass some set of tests to return an expected output. Validation also means availability and successful installation of extra dependencies - any plugin that fails installation will not be included, and this is a good idea so that many plugins don't complicate the install process.
+Plugins will be validated and loaded by [wordfish-python](http://www.github.com/word-fish/wordfish-python). Plugins will be validated with tests that ensure that output is as is expected for use with wordfish-python. When generating an application, the user will be given choice to use only the valid plugins. Validation means that they pass some set of tests to return an expected output. Validation also means availability and successful installation of extra dependencies - any plugin that fails installation will not be included, and this is a good idea so that many plugins don't complicate the install process.
 
 For some plugins, user arguments will be required, and these arguments will all be determined by the "arguments" variable, asked for at time of application generation.
 
