@@ -1,0 +1,19 @@
+[
+    {
+        "name": "Template Plugin Name",
+        "tag": "template",
+        "corpus": "False",
+        "terms": "False",
+        "relationships":"False",
+        "dependencies": {
+                          "python": [ 
+                                     "pythondependency"
+                                    ],
+                          "plugins": ["otherplugindependency"]
+                        },
+        "arguments": "",
+        "contributors": ["Your Name"], 
+        "doi": "DOI"
+ 
+   }
+]
