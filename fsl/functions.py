@@ -40,7 +40,7 @@ def extract_terms(output_dir):
                                    "y":label["@y"],
                                    "z":label["@z"]}
 
-        save_terms(terms,output_dir=output_dir)
+       save_terms(terms,output_dir=output_dir)
 
     else:
        print "Cannot define fsl atlas terms, no internet connectivity."
@@ -48,7 +48,6 @@ def extract_terms(output_dir):
     
 def extract_relationships(output_dir):
     print "Relationship extraction is not defined for fsl atlas plugin."
-
 
 def get_atlas_xml():
     # If > 100 atlases, we would need to get pagination pages here.

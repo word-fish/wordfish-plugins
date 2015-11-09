@@ -1,0 +1,14 @@
+[
+    {
+        "name": "FMA from NIF (brain anatomical regions)",
+        "tag": "fma_nif",
+        "corpus": "False",
+        "terms": "True",
+        "relationships":"True",
+        "dependencies": {},
+        "arguments": "",
+        "contributors": ["Vanessa Sochat"], 
+        "doi": "http://ontology.neuroinfo.org"
+ 
+   }
+]
