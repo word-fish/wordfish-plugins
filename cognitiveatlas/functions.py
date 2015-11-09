@@ -12,7 +12,7 @@ from wordfish.terms import save_relationships
 
 # REQUIRED WORDNET PYTHON FUNCTIONS
 def extract_text(output_dir):
-    return None
+    print "Corpus extraction is not defined for the cognitiveatlas plugin."
 
 
 def get_concepts():
@@ -44,7 +44,8 @@ def extract_relationships(output_dir):
     for concept in concepts:
         if "relationships" in concept:
             for relation in concept["relationships"]:   
-                relationship = "%s,%s" %(relation["direction"],relation["relationship"]) 
-                tuples.append[(concept["id"],relation["id"],relationship)]
+                relationship = "%s,%s" %(relation["direction"],relation["relationship"])
+                tup = (concept["id"],relation["id"],relationship) 
+                tuples.append(tup)
 
     save_relationships(terms,output_dir=output_dir,relationships=tuples)
