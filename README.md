@@ -117,6 +117,15 @@ You should generally print to the screen what is going on, and how long it might
       "Extracting relationships, will take approximately 3 minutes"
 
 
+While most users and clusters have internet connectivity, it cannot be assumed, and an error in attempting to access an online resource could trigger an error. If your plugin has functions that require connectivity, we have a function to check:
+
+      from wordfish.utils import has_internet_connectivity
+      if has_internet_connectivity():
+          # Do analysis
+
+
+#### Functions
+
 If you need a github repo, we have a function for that:
 
 
@@ -130,18 +139,14 @@ If you need a general temporary place to put things, use `tempfile`
       tmpdir = tempfile.mkdtemp()
 
 
-While most users and clusters have internet connectivity, it cannot be assumed, and an error in attempting to access an online resource could trigger an error. If your plugin has functions that require connectivity, we have a function to check:
-
-      from wordfish.utils import has_internet_connectivity
-      if has_internet_connectivity():
-          # Do analysis
-
 
 We have other useful functions for downloading data, or obtaining a url. For example:
 
       from wordfish.utils import get_url, get_json
+      from wordfish.standards.xml.functions import get_xml_url
       myjson = get_json(url)
       webpage = get_url(url)
+      xml = get_xml_url(url)
 
 
 ### Config.json

@@ -1,0 +1,14 @@
+[
+    {
+        "name": "FSL Anatomical Atlases",
+        "tag": "fsl",
+        "corpus": "False",
+        "terms": "True",
+        "relationships":"False",
+        "dependencies": {},
+        "arguments": "",
+        "contributors": ["Vanessa Sochat"], 
+        "doi": "http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/"
+ 
+   }
+]
