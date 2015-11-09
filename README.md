@@ -137,6 +137,13 @@ While most users and clusters have internet connectivity, it cannot be assumed, 
           # Do analysis
 
 
+We have other useful functions for downloading data, or obtaining a url. For example:
+
+      from wordfish.utils import get_url, get_json
+      myjson = get_json(url)
+      webpage = get_url(url)
+
+
 ### Config.json
 Plugins will be understood by the application by way of the config.json. For example:
 

@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Cattell's 282 Traits",
+        "tag": "cattell",
+        "corpus": "False",
+        "terms": "True",
+        "relationships":"False",
+        "dependencies": {},
+        "arguments": "",
+        "contributors": ["Vanessa Sochat"], 
+        "doi": "https://github.com/vsoch/traits"
+ 
+   }
+]

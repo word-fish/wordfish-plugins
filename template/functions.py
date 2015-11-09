@@ -30,7 +30,7 @@ def extract_text(output_dir):
     # and print something silly :)
     print "Text corpus extraction is not defined for this plugin."
 
-def extract_terms(output_dir,extract_relationships=False):
+def extract_terms(output_dir):
 
     # You can provide a dictionary if your terms have meta data
     # the key should be some unique ID for your term, and use numbers
