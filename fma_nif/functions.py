@@ -52,5 +52,4 @@ def get_terms():
    return terms
 
 def get_nif_json():
-    # If > 100 atlases, we would need to get pagination pages here.
     return get_json("http://matrix.neuinfo.org:9000/scigraph/graph/neighbors/NIFGA:birnlex_796?relationshipType=http://www.obofoundry.org/ro/ro.owl%23has_proper_part&direction=OUTGOING&depth=9")
