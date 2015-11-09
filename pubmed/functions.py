@@ -30,7 +30,7 @@ def extract_text(output_dir):
     print "Text extraction is not defined for this plugin."
 def extract_terms(output_dir):
     print "Term extraction is not defined for this plugin."
-def extract_relationships(output_dir)
+def extract_relationships(output_dir):
     print "Relationship extraction is not defined for this plugin."
 
 
@@ -56,7 +56,7 @@ def get_ftp():
     '''get_ftp
     download ftp object from pubmed
     '''
-    return pmc = Pubmed(email=email).ftp
+    return Pubmed(email=email).ftp
 
 
 # Download pubmed without relying on pubmed object

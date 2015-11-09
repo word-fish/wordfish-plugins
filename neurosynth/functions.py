@@ -26,7 +26,7 @@ from wordfish.terms import save_terms
 from wordfish.terms import save_relationships
 
 # REQUIRED WORDFISH PYTHON FUNCTIONS
-def extract_text(email="deepdive@stanford.edu",output_dir):
+def extract_text(output_dir,email="deepdive@stanford.edu"):
 
     f,d = download_data()
     features = pandas.read_csv(f,sep="\t")  
