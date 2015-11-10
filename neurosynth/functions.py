@@ -16,6 +16,7 @@ from wordfish.utils import untar
 import nibabel as nb
 from nibabel import nifti1
 import pandas
+import urllib2
 import re
 import os
 import sys
@@ -26,7 +27,7 @@ from wordfish.terms import save_terms
 from wordfish.terms import save_relationships
 
 # REQUIRED WORDFISH PYTHON FUNCTIONS
-def extract_text(output_dir,email="deepdive@stanford.edu"):
+def extract_text(output_dir,email="wordfish@stanford.edu"):
 
     f,d = download_data()
     features = pandas.read_csv(f,sep="\t")  
@@ -48,9 +49,8 @@ def extract_text(output_dir,email="deepdive@stanford.edu"):
                 end = iters*5000
             arts = get_articles(pmids[start:end])
             articles.update(arts)
-    except URLError:
-        print "URLError: There is a problem with your internet connection."
-        sys.exit(32)
+    except urllib2.URLError, e:
+        print "URLError: %e, There is a problem with your internet connection." %(e)
 
     # Prepare dictionary with key [pmid] and value [text]
     corpus_input = dict()
@@ -59,17 +59,27 @@ def extract_text(output_dir,email="deepdive@stanford.edu"):
 
     # Save articles to text files in output folder     
     save_sentences(corpus_input,output_dir=output_dir)
+
+def extract_terms(output_dir):
+    f,d = download_data()
+    features = pandas.read_csv(f,sep="\t")  
+    terms = features.columns.tolist()
+    terms.pop(0)  #pmid
+    save_terms(terms,output_dir)
     
+
 def extract_relationships(output_dir):
 
-    features,database = download_data()
+    f,d = download_data()
+    features = pandas.read_csv(f,sep="\t")  
+    database = pandas.read_csv(d,sep="\t")  
     terms = features.columns.tolist()
     terms.pop(0)  #pmid
 
     relationships = []
     print "Extracting NeuroSynth relationships..."
-    dataset = Dataset(database)
-    dataset.add_features(features)
+    dataset = Dataset(d)
+    dataset.add_features(f)
     image_matrix = pandas.DataFrame(columns=range(228453))
     for t in range(len(terms)):
         term = terms[t]
