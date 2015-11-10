@@ -5,8 +5,10 @@ plugin for wordfish python to get corpus from reddit
 '''
 
 from wordfish.utils import has_internet_connectivity
+import time
 import praw
 import os
+
 
 # REQUIRED FUNCTIONS FOR ALL WORDFISH PLUGINS
 from wordfish.corpus import save_sentences
@@ -34,51 +36,44 @@ def extract_text(output_dir,boards=None):
              "cringe","rage","niceguys","sex","loseit","raisedbynarcissists","BPD",
              "AvPD","DID","SPD","EOOD","CompulsiveSkinPicking","psychoticreddit","insomnia"]
 
+    corpus_input = dict()
+        
     if has_internet_connectivity():
         r = praw.Reddit(user_agent='wordfish')
 
         for board in boards:
             print "Parsing %s" %board
-            submissions = r.get_subreddit(disorder).get_hot(limit=1000)
+            submissions = r.get_subreddit(board).get_hot(limit=1000)
             now = time.localtime()
             content = []
             ids = []
             scores = []
-        for sub in submissions:
-            try:
-                if len(sub.selftext) > 0:
-                    if sub.fullname not in ids:
-                        content.append(sub.selftext)
-                        ids.append(sub.fullname)
-                        scores.append(sub.score)
-                        if sub.num_comments > 0:
-                            comments = sub.comments
-                            while len(comments) > 0:
-                                for comment in comments:
-                                    current = comments.pop(0)
-                                    if isinstance(current,praw.objects.MoreComments):
-                                        comments = comments + current.comments()
-                                    else:               
-                                        if len(current.body)>0:     
-                                            content.append(current.body)
-                                            ids.append(current.fullname)
-                                            scores.append(current.score)
-            except:
-                print "Skipping %s" %sub.fullname
-
-        print "%s has %s entities" %(disorder,len(content))
-        # For each result, package into the right format for text parsing
-        corpus_input = dict()
-        count = 0
-        last_disorder = disorder[0]
-        for c in range(len(content)):
-            current_disorder = disorder[c]
-            if last_disorder == current_disorder:
-                count = count + 1
-            else:
-                count = 1
-            uid = "%s_%s" %(current_disorder,count)
-            corpus_input[uid] = content[c]
+            for sub in submissions:
+               try:
+                  if len(sub.selftext) > 0:
+                      if sub.fullname not in ids:
+                          content.append(sub.selftext)
+                          ids.append(sub.fullname)
+                          scores.append(sub.score)
+                          if sub.num_comments > 0:
+                              comments = sub.comments
+                              while len(comments) > 0:
+                                  for comment in comments:
+                                      current = comments.pop(0)
+                                      if isinstance(current,praw.objects.MoreComments):
+                                          comments = comments + current.comments()
+                                      else:               
+                                          if len(current.body)>0:     
+                                              content.append(current.body)
+                                              ids.append(current.fullname)
+                                              scores.append(current.score)
+               except:
+                   print "Skipping %s" %sub.fullname
+            print "%s has %s entities" %(board,len(content))
+            # For each result, package into the right format for text parsing
+            for c in range(len(content)):
+                uid = "%s_%s" %(board,c)
+                corpus_input[uid] = content[c]
 
         # Save articles to text files in output folder     
         save_sentences(corpus_input,output_dir=output_dir)

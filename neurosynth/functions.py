@@ -63,6 +63,7 @@ def extract_text(output_dir,email="deepdive@stanford.edu"):
 
 def extract_terms(output_dir):
     features,database = download_data()
+    features = pandas.read_csv(features,sep="\t")
     terms = features.columns.tolist()
     terms.pop(0)  #pmid
     save_terms(terms,output_dir=output_dir)

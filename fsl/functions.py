@@ -28,9 +28,9 @@ def extract_terms(output_dir):
            label_description_file = "http://neurovault.org/media/images/291/Talairach-labels-2mm.xml"
            print "Parsing %s" %(label_description_file)
            xml_dict = read_xml_url(label_description_file)
-           atlas_name = myxml["atlas"]["header"]["name"]
+           atlas_name = xml_dict["atlas"]["header"]["name"]
            atlas_name_label = atlas_name.replace(" ","_").lower()
-           atlas_labels = myxml["atlas"]["data"]["label"]
+           atlas_labels = xml_dict["atlas"]["data"]["label"]
            for l in range(len(atlas_labels)):
                label = atlas_labels[l]
                # We will use coordinate for unique ID
