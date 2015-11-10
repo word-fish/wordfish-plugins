@@ -59,18 +59,12 @@ def extract_text(output_dir,email="deepdive@stanford.edu"):
 
     # Save articles to text files in output folder     
     save_sentences(corpus_input,output_dir=output_dir)
-
-
-def extract_terms(output_dir):
-    features,database = download_data()
-    features = pandas.read_csv(features,sep="\t")
-    terms = features.columns.tolist()
-    terms.pop(0)  #pmid
-    save_terms(terms,output_dir=output_dir)
     
 def extract_relationships(output_dir):
 
     features,database = download_data()
+    terms = features.columns.tolist()
+    terms.pop(0)  #pmid
 
     relationships = []
     print "Extracting NeuroSynth relationships..."
