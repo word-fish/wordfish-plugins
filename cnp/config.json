@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Consortium for Neuropsychiatric Phenomics Questions (CNP)",
+        "tag": "template",
+        "corpus": "False",
+        "terms": "True",
+        "relationships":"False",
+        "dependencies": { "python":["pandas"]},
+        "arguments": "",
+        "contributors": ["Vanessa Sochat","Bob Bilder"], 
+        "doi": "DOI"
+ 
+   }
+]
