@@ -7,10 +7,7 @@ functions for working with neurosynth database
 from neurosynth.base.dataset import Dataset
 from neurosynth.base.dataset import FeatureTable
 from wordfish.plugins.pubmed.functions import Pubmed
-from neurosynth.base import mask
-from neurosynth.base import imageutils
 from neurosynth.analysis import meta
-from neurosynth.analysis import decode
 from wordfish.vm import download_repo
 from wordfish.utils import untar
 import nibabel as nb
@@ -53,9 +50,13 @@ def extract_text(output_dir,email="wordfish@stanford.edu"):
         print "URLError: %e, There is a problem with your internet connection." %(e)
 
     # Prepare dictionary with key [pmid] and value [text]
+    features.index = features.pmid
+    features = features.drop("pmid",axis=1)
     corpus_input = dict()
     for pmid,article in articles.iteritems():
-        corpus_input[pmid] = article.getAbstract()
+        # Label the article with nonzero values
+        labels = features.columns[features.loc[pmid]!=0].tolist()     
+        corpus_input[pmid] = {"text":article.getAbstract(),"labels":labels}
 
     # Save articles to text files in output folder     
     save_sentences(corpus_input,output_dir=output_dir)

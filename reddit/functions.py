@@ -73,7 +73,7 @@ def extract_text(output_dir,boards=None):
             # For each result, package into the right format for text parsing
             for c in range(len(content)):
                 uid = "%s_%s" %(board,c)
-                corpus_input[uid] = content[c]
+                corpus_input[uid] = {"text":content[c],"labels":[board]}
 
         # Save articles to text files in output folder     
         save_sentences(corpus_input,output_dir=output_dir)
