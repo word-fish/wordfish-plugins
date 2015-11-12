@@ -6,7 +6,7 @@ functions for working with neurosynth database
 
 from neurosynth.base.dataset import Dataset
 from neurosynth.base.dataset import FeatureTable
-from wordfish.plugins.pubmed.functions import Pubmed
+from wordfish.plugins.pubmed.functions import get_articles
 from neurosynth.analysis import meta
 from wordfish.vm import download_repo
 from wordfish.utils import untar
