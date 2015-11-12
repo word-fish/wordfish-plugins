@@ -36,7 +36,7 @@ def extract_text(output_dir,email="wordfish@stanford.edu"):
 
     # download abstract texts
     print "Downloading pubmed articles (this may take a while)"
-    articles = []
+    articles = dict()
     try:
         iters = int(numpy.ceil(len(pmids)/5000.0))
         start = 0
