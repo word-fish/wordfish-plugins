@@ -38,7 +38,7 @@ def extract_text(output_dir,email="wordfish@stanford.edu"):
     print "Downloading pubmed articles (this may take a while)"
     articles = []
     try:
-        iters = numpy.ceil(len(pmids)/5000.0)
+        iters = int(numpy.ceil(len(pmids)/5000.0))
         start = 0
         for i in range(iters):
             if i == iters:
