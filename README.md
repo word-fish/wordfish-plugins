@@ -41,19 +41,27 @@ The minimum requirement for a new plugin functions.py is as follows:
 
 
 #### Extract Text (from corpus)
-Should do whatever functions you need to obtain your text, and any additional python modules you need should be defined in the config.json "dependencies" --> "python" section (see below). Currently, you should obtain user input interactively, or set as a default argument, and in the future we will implement a way to obtain these values from the user who is generating the application. Your function should prepare either a dictionary (in the case of having a unique ID you want to maintain) or a list (if you don't have unique ids). For example, if we are parsing something from pubmed, our script might prepare the following data structure:
+Should do whatever functions you need to obtain your text, and any additional python modules you need should be defined in the config.json "dependencies" --> "python" section (see below). Currently, you should hard code extra variables into the functions themselves (meaning use default arguments) and in the future we will implement a way to obtain these values from the user who is generating the application. The minimum that your function must produce is a list of text inputs:
+
+Your function should prepare either a dictionary (in the case of having a unique ID you want to maintain) or a list (if you don't have unique ids). For example, if we are parsing something from pubmed, our script might prepare the following data structure:
+
+        ["This is text from article 1 with no id.",
+        "This is text from article 2 with no id."]
+
+However, if you have unique ids (or other labels associated with your data that would be useful in a s task) then you can use a dictionary, where the unique ID is the key:
 
 
-     {
-      "12345":"This is text from article 1 with pubmed id 12345",
-      "12346":"This is text from article 2 with pubmed id 12346",
-     }
+      corpus_input = {
+                     "uid1":{"text":"One fish, two fish."},
+                     "uid2":{"text":"Nerd fish, wordfish."},
+                    }
 
-In the case that you don't have any unique ids, just put your text objects into a list:
+and the text should be under a field called "text" in the dictionary associated with the uid. Currently, you are not constrained as to the different meta data you can package with your corpus text. However, if you have some sort of label to distinguish groups of things (that later will be used in a classification sense) please put these labels in the "labels" field, and give a corresponding list:
 
-    ["This is text from article 1 with no id.",
-    "This is text from article 2 with no id."]
-
+      corpus_input = {
+                     "uid1":{"text":"One fish, two fish.","labels":["counting","poem"]},
+                     "uid2":{"text":"Nerd fish, wordfish.","labels":["poem"]},
+                    }
 
 The last line of your function should pass either the dictionary or list to the save_sentences function:
 
@@ -63,6 +71,7 @@ The last line of your function should pass either the dictionary or list to the 
     save_sentences(corpus_input,output_dir=output_dir)
 
 The output_dir comes from the higher level script running it, so just make sure to pass it along.
+
 
 #### Extract terms
 The simplest implementation will send a list of strings to the `save_terms` function:
@@ -159,6 +168,7 @@ Plugins will be understood by the application by way of the config.json. For exa
               "tag": "neurosynth",
               "corpus": "True",
               "terms": "True",
+              "labels": "True",
               "relationships":"True",
               "dependencies": {
                                 "python": [ 
@@ -179,7 +189,7 @@ Plugins will be understood by the application by way of the config.json. For exa
 
  - name: should be a human readable description of the plugin
  - tag: should be a term (no spaces or special characters) that corresponds with the folder name in the plugins directory. 
- - corpus/terms: boolean, each "True" or "False" should indicate if the plugin can return a corpus (text to be parsed by deepdive) or terms (a vocabulary to be used to find mentions of things.)
+ - corpus/terms: boolean, each "True" or "False" should indicate if the plugin can return a corpus (text to be parsed by wordfish) or terms (a vocabulary to be used to find mentions of things.)
  - dependencies: should include "python" and "plugins." Python corresponds to python packages that are dependencies. "plugins" refers to other plugins that are required.
  - arguments: should be a dictionary with (optionally) corpus and/or terms. The user will be asked for these arguments to run the `extract_text` and `extract_terms` functions.
  - contributors: should be a name/orcid ID or email of researchers responsible for creation of the plugins. This is for future help and debugging.
