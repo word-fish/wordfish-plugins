@@ -8,6 +8,7 @@ from neurosynth.base.dataset import Dataset
 from neurosynth.base.dataset import FeatureTable
 from wordfish.plugins.pubmed.functions import get_articles
 from neurosynth.analysis import meta
+from scipy.stats import pearsonr
 from wordfish.vm import download_repo
 from wordfish.utils import untar
 import nibabel as nb
@@ -90,16 +91,17 @@ def extract_relationships(output_dir):
         maps = meta.MetaAnalysis(dataset,ids)
         # Let's use reverse inference, unthresholded Z score map
         image_matrix.loc[term] = maps.images["pFgA_z"]
-    sims = image_matrix.corr(method="pearson")
+
+    sims = pandas.DataFrame(columns=image_matrix.index)
     tuples = []
-    ids = sims.index
-    # This isn't tested yet
-    for s1 in range(len(ids)):
-        sim1 = ids[s1]
-        for s2 in range(len(ids)):
-            sim2 = ids[s2]
-            if s2>s1:
-                tuples.append((sim1,sim2,sims.loc[sim1,sim2]))
+    for t1 in range(image_matrix.index):
+        term1 = image_matrix.index[t1]
+        for t2 in range(image_matrix.index):
+            term2 = image_matrix.index[t2]
+            if t1<t2:
+                score = pearsonr(image_matrix.loc[term1],image_matrix.loc[term2])[0]
+                tuples.append((term1,term2,score))
+
     save_relationships(terms,output_dir=output_dir,relationships=tuples)
 
 
