@@ -15,10 +15,6 @@ from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
 from wordfish.terms import save_relationships
 
-# Reddit might have some terms of interest, maybe top boards?
-def extract_terms():
-    return None
-
 def extract_text(output_dir,boards=None):
     '''extract_corpus
     main function for parsing reddit boards into deepdive input corpus

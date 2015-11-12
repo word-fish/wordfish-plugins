@@ -13,6 +13,7 @@ from wordfish.utils import untar
 import nibabel as nb
 from nibabel import nifti1
 import pandas
+import numpy
 import urllib2
 import re
 import os
