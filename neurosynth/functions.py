@@ -57,7 +57,7 @@ def extract_text(output_dir,email="wordfish@stanford.edu"):
     corpus_input = dict()
     for pmid,article in articles.iteritems():
         # Label the article with nonzero values
-        labels = features.columns[features.loc[str(pmid)]!=0].tolist()     
+        labels = features.columns[features.loc[int(pmid)]!=0].tolist()     
         corpus_input[pmid] = {"text":article.getAbstract(),"labels":labels}
 
     # Save articles to text files in output folder     
