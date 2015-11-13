@@ -32,12 +32,11 @@ def extract_text(output_dir,boards=None):
              "cringe","rage","niceguys","sex","loseit","raisedbynarcissists","BPD",
              "AvPD","DID","SPD","EOOD","CompulsiveSkinPicking","psychoticreddit","insomnia"]
 
-    corpus_input = dict()
-        
     if has_internet_connectivity():
         r = praw.Reddit(user_agent='wordfish')
 
         for board in boards:
+            corpus_input = dict()
             print "Parsing %s" %board
             submissions = r.get_subreddit(board).get_hot(limit=1000)
             now = time.localtime()
@@ -71,8 +70,9 @@ def extract_text(output_dir,boards=None):
                 uid = "%s_%s" %(board,c)
                 corpus_input[uid] = {"text":content[c],"labels":[board]}
 
-        # Save articles to text files in output folder     
-        save_sentences(corpus_input,output_dir=output_dir)
+            # Save articles to text files in output folder     
+            save_sentences(corpus_input,output_dir=output_dir,prefix=board)
+
 
 
 def extract_terms(output_dir,extract_relationships=False):
