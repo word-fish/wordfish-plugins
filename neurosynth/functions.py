@@ -47,6 +47,7 @@ def extract_text(output_dir,email="wordfish@stanford.edu"):
             else:
                 end = iters*5000
             arts = get_articles(pmids[start:end],email)
+            start = end
             articles.update(arts)
     except urllib2.URLError, e:
         print "URLError: %e, There is a problem with your internet connection." %(e)
