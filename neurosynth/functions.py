@@ -57,7 +57,7 @@ def extract_text(output_dir,email="wordfish@stanford.edu"):
     corpus_input = dict()
     for pmid,article in articles.iteritems():
         # Label the article with nonzero values
-        labels = features.columns[features.loc[pmid]!=0].tolist()     
+        labels = features.columns[features.loc[str(pmid)]!=0].tolist()     
         corpus_input[pmid] = {"text":article.getAbstract(),"labels":labels}
 
     # Save articles to text files in output folder     
@@ -94,9 +94,9 @@ def extract_relationships(output_dir):
 
     sims = pandas.DataFrame(columns=image_matrix.index)
     tuples = []
-    for t1 in range(image_matrix.index):
+    for t1 in range(len(image_matrix.index)):
         term1 = image_matrix.index[t1]
-        for t2 in range(image_matrix.index):
+        for t2 in range(len(image_matrix.index)):
             term2 = image_matrix.index[t2]
             if t1<t2:
                 score = pearsonr(image_matrix.loc[term1],image_matrix.loc[term2])[0]
