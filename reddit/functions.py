@@ -28,7 +28,7 @@ def go_fish(boards=None):
              "cringe","rage","niceguys","sex","loseit","raisedbynarcissists","BPD",
              "AvPD","DID","SPD","EOOD","CompulsiveSkinPicking","psychoticreddit","insomnia"]
     
-    generate_job(func="extract_text",category="corpus",inputs={"boards",boards})
+    generate_job(func="extract_text",category="corpus",inputs={"boards":boards})
 
 
 # USER FUNCTIONS
