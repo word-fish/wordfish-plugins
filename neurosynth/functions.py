@@ -36,7 +36,7 @@ def go_fish():
     print "NeuroSynth database has %s unique PMIDs" %(len(pmids))
 
     # jobs to download abstract texts
-    generate_job(func="extract_text",category="corpus",inputs={"pmids",pmids},batch_num=100)
+    generate_job(func="extract_text",category="corpus",inputs={"pmids":pmids},batch_num=100)
     generate_job(func="extract_terms",category="terms")
     generate_job(func="extract_relationships",category="terms")
 
