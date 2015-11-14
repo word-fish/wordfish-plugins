@@ -10,12 +10,15 @@ from wordfish.utils import get_json, has_internet_connectivity
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
 from wordfish.terms import save_relationships
+from wordfish.plugin import generate_job
 
-# REQUIRED WORDNET PYTHON FUNCTIONS
-def extract_text(output_dir):
-    print "Text corpus extraction is not defined for the fma-nif plugin."
+# REQUIRED WORDFISH FUNCTION
+def go_fish():    
+    generate_job(func="extract_terms",category="terms")
+    generate_job(func="extract_relationships",category="terms")
 
 
+# USER FUNCTIONS
 def extract_terms(output_dir):
 
     if has_internet_connectivity():    

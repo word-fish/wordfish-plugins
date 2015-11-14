@@ -24,33 +24,35 @@ import sys
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
 from wordfish.terms import save_relationships
+from wordfish.plugin import generate_job
 
-# REQUIRED WORDFISH PYTHON FUNCTIONS
-def extract_text(output_dir,email="wordfish@stanford.edu"):
+# REQUIRED WORDFISH FUNCTION
+def go_fish():
 
     f,d = download_data()
     features = pandas.read_csv(f,sep="\t")  
     database = pandas.read_csv(d,sep="\t")  
-
     pmids = database.id.unique().tolist()
     print "NeuroSynth database has %s unique PMIDs" %(len(pmids))
 
-    # download abstract texts
-    print "Downloading pubmed articles (this may take a while)"
-    articles = dict()
+    # jobs to download abstract texts
+    generate_job(func="extract_text",category="corpus",inputs={"pmids",pmids},batch_num=100)
+    generate_job(func="extract_terms",category="terms")
+    generate_job(func="extract_relationships",category="terms")
+
+
+# USER FUNCTIONS
+def extract_text(pmids,output_dir):
+
+    email="wordfish@stanford.edu"
+    print "Downloading %s pubmed articles!" %(len(pmids))
     try:
-        iters = int(numpy.ceil(len(pmids)/5000.0))
-        start = 0
-        for i in range(iters):
-            if i == iters:
-                end = len(pmids)
-            else:
-                end = iters*5000
-            arts = get_articles(pmids[start:end],email)
-            start = end
-            articles.update(arts)
+        articles = get_articles(pmids,email)
     except urllib2.URLError, e:
         print "URLError: %e, There is a problem with your internet connection." %(e)
+
+    f,d = download_data()
+    features = pandas.read_csv(f,sep="\t")  
 
     # Prepare dictionary with key [pmid] and value [text]
     features.index = features.pmid
@@ -131,3 +133,6 @@ def download_data(destination=None):
     database = "%s/database.txt" %(destination)
     
     return features,database
+
+
+

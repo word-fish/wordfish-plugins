@@ -9,16 +9,12 @@ Currently this plugin is a supplementary one, for use via other plugins to query
 
 '''
 
+from wordfish.utils import wordfish_home
 from wikipedia import search, page
 import re
 
-def extract_text(output_dir):
-    print "Text extraction is not defined for this plugin."
-def extract_terms(output_dir):
-    print "Term extraction is not defined for this plugin."
-def extract_relationships(output_dir)
-    print "Relationship extraction is not defined for this plugin."
-
+def go_fish():
+    print "Extractions are not defined for this plugin"
 
 def get_page(searchterm):
     # Assume the user knows the specific page, it will be first result

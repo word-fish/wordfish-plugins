@@ -14,10 +14,11 @@ from wordfish.standards.xml.functions import read_xml_url
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
 from wordfish.terms import save_relationships
+from wordfish.plugin import generate_job
 
-# REQUIRED WORDNET PYTHON FUNCTIONS
-def extract_text(output_dir):
-    print "Text corpus extraction is not defined for the fsl plugin."
+# REQUIRED WORDFISH FUNCTION
+def go_fish():    
+    generate_job(func="extract_terms",category="terms")
 
 def extract_terms(output_dir):
 
@@ -46,9 +47,6 @@ def extract_terms(output_dir):
        print "Cannot define fsl atlas terms, no internet connectivity."
 
     
-def extract_relationships(output_dir):
-    print "Relationship extraction is not defined for fsl atlas plugin."
-
 def get_atlas_xml():
     # If > 100 atlases, we would need to get pagination pages here.
     return get_json("http://neurovault.org/api/atlases/?format=json")["results"]

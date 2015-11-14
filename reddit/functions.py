@@ -14,15 +14,11 @@ import os
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
 from wordfish.terms import save_relationships
+from wordfish.plugin import generate_job
 
-def extract_text(output_dir,boards=None):
-    '''extract_corpus
-    main function for parsing reddit boards into deepdive input corpus
-    Parameters
-    ==========
-    boards: list
-        list of reddit boards to parse
-    '''
+# REQUIRED WORDFISH FUNCTION
+def go_fish(boards=None):
+
     if boards == None:
         # let's do some neurological disorders!
         boards = ["depression","anxiety","stress","OCD","panic","phobia","PTSD",
@@ -31,7 +27,20 @@ def extract_text(output_dir,boards=None):
              "gaming","worldnews","politics","movies","science","atheism","Showerthoughts",
              "cringe","rage","niceguys","sex","loseit","raisedbynarcissists","BPD",
              "AvPD","DID","SPD","EOOD","CompulsiveSkinPicking","psychoticreddit","insomnia"]
+    
+    generate_job(func="extract_text",category="corpus",inputs={"boards",boards})
 
+
+# USER FUNCTIONS
+def extract_text(boards,output_dir):
+    '''extract_text
+    main function for parsing reddit boards into deepdive input corpus
+    Parameters
+    ==========
+    boards: list
+        list of reddit boards to parse
+    '''
+    if isinstance(boards,str): boards = [boards]
     if has_internet_connectivity():
         r = praw.Reddit(user_agent='wordfish')
 
@@ -72,11 +81,3 @@ def extract_text(output_dir,boards=None):
 
             # Save articles to text files in output folder     
             save_sentences(corpus_input,output_dir=output_dir,prefix=board)
-
-
-
-def extract_terms(output_dir,extract_relationships=False):
-    print "Term extraction is not currently defined for the reddit plugin."
-    
-def extract_relationships(output_dir):
-    print "Relationship extraction is not currently defined for the reddit plugin."

@@ -10,25 +10,42 @@ functions for working [description]
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
 from wordfish.terms import save_relationships
+from wordfish.plugin import generate_job
 
-# REQUIRED WORDNET PYTHON FUNCTIONS
-def extract_text(output_dir):
+# REQUIRED WORDFISH FUNCTION
+def go_fish():
+
+    # jobs to download abstract texts
+    generate_job(func="extract_text",category="corpus",inputs={"uids",uids},batch_num=100)
+    generate_job(func="extract_terms",category="terms")
+    generate_job(func="extract_relationships",category="terms")
+
+
+# USER FUNCTIONS
+def extract_text(uids,output_dir):
+
+    # This function will be called by a job, and must call save_sentences
+    # ** ALL USER FUNCTIONS MUST HAVE output_dir as an input
 
     # You can provide a dictionary if your items have ids
     corpus_input = {
-                    "unique_id_1","bla bla bla 1",
-                    "unique_id_1","bla bla bla 2"
+                     "uid1":{"text":"One fish, two fish."},
+                     "uid2":{"text":"Nerd fish, wordfish."},
                     }
 
-    # Or a list if not
-    corput_input = ["bla bla bla 1","bla bla bla 2"]
+    # If you have labels (to be used for classification
+    corpus_input = {
+                     "uid1":{"text":"One fish, two fish.","labels":["counting","poem"]},
+                     "uid2":{"text":"Nerd fish, wordfish.","labels":["poem"]},
+                    }
 
-    # Save articles to text files in output folder     
+    # Or just give raw text in a list
+    corpus_input =   ["This is text from article 1 with no id.",
+                      "This is text from article 2 with no id."]
+
+
+    # Save articles to individual text files in output folder     
     save_sentences(corpus_input,output_dir=output_dir)
-
-    # If not defined for the function, just delete the above,
-    # and print something silly :)
-    print "Text corpus extraction is not defined for this plugin."
 
 def extract_terms(output_dir):
 
@@ -42,13 +59,9 @@ def extract_terms(output_dir):
     # Or a list if not
     terms = ["term1"]
 
-    save_terms(terms,output_dir=output_dir)
+    save_terms(terms,output_dir=home)
 
-    # If not defined for the function, just delete the above,
-    # and print something silly :)
-    print "Terminology extraction is not defined for this plugin."
 
-    
 def extract_relationships(output_dir):
 
     # You should provide a list of tuples, with the
@@ -59,8 +72,3 @@ def extract_relationships(output_dir):
     # Value can be a string or int
     # The terms variable is equivalent to the one needed for extract_terms
     save_relationships(terms,output_dir=output_dir,relationships=tuples)
-
-    # If not defined for the function, just delete the above,
-    # and print something silly :)
-    print "Relationship extraction is not defined for this plugin."
-

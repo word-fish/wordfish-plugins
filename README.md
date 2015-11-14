@@ -41,8 +41,32 @@ The minimum requirement for a new plugin functions.py is as follows:
 
 
 #### Extract Text (from corpus)
-Should do whatever functions you need to obtain your text, and any additional python modules you need should be defined in the config.json "dependencies" --> "python" section (see below). Currently, you should hard code extra variables into the functions themselves (meaning use default arguments) and in the future we will implement a way to obtain these values from the user who is generating the application. The minimum that your function must produce is a list of text inputs:
+Should do whatever functions you need to obtain your text, and any additional python modules you need should be defined in the config.json "dependencies" --> "python" section (see below). Currently, you should hard code extra variables into the functions themselves (meaning use default arguments) and in the future we will implement a way to obtain these values from the user who is generating the application. The minimum that your function must produce is a list of text inputs. You have two options: to run all extractions for one job (in the case it is reasonable, time and computationally), or to split extractions up to run on a cluster (recommended).
 
+
+##### Split into smaller jobs
+This is the recommended approach. In this case, in your extract_text function you should call a function to generate a job, `generate_job`:
+      
+
+      generate_job(function="extract_single",inputs={"pmids",pmids},batch_num=100)
+
+
+Where `extract_single` corresponds to the function name in your functions.py that can do the extraction, and this function should call save_sentences. `inputs` is a dictionary of input variables, which must be lists or strings. Typically, these inputs define parameters to allow for extraction of one thing (for example, this could be a list of pubmed IDs, or a reddit board name). If an input is provided that is a single string, it is assumed to be the same for all function calls. If more than one list is provided, the lists must have equal length. Finally, `batch_num` is the number of items in your list that you want sent to each function call. The default is 1 (if you do not specify). Here is an example of the above:
+
+      pmids = [123,345,345,456]
+      generate_job(function="extract_single",inputs={"pmids",pmids},batch_num=2)
+      .
+      .
+      .
+      def extract_single(pmids,output_dir):
+          print "We are extracting two at a time here!"
+          .
+          .
+          .
+          save_sentences(corpus_input,output_dir=output_dir)
+
+
+##### Run all one Job
 Your function should prepare either a dictionary (in the case of having a unique ID you want to maintain) or a list (if you don't have unique ids). For example, if we are parsing something from pubmed, our script might prepare the following data structure:
 
         ["This is text from article 1 with no id.",
@@ -71,6 +95,7 @@ The last line of your function should pass either the dictionary or list to the 
     save_sentences(corpus_input,output_dir=output_dir)
 
 The output_dir comes from the higher level script running it, so just make sure to pass it along.
+
 
 
 #### Extract terms

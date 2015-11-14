@@ -9,12 +9,15 @@ from cognitiveatlas.api import get_task, get_concept
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
 from wordfish.terms import save_relationships
+from wordfish.plugin import generate_job
 
-# REQUIRED WORDNET PYTHON FUNCTIONS
-def extract_text(output_dir):
-    print "Corpus extraction is not defined for the cognitiveatlas plugin."
+# REQUIRED WORDFISH FUNCTION
+def go_fish():    
+    generate_job(func="extract_terms",category="terms")
+    generate_job(func="extract_relationships",category="terms")
 
 
+# USER FUNCTIONS
 def get_concepts():
     return get_concept().json
 
@@ -30,7 +33,7 @@ def get_terms():
         terms[concept_id] = meta
     return terms
 
-def extract_terms(output_dir,extract_relationships=False):
+def extract_terms(output_dir):
 
     terms = get_terms()
     save_terms(terms,output_dir=output_dir)

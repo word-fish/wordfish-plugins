@@ -10,15 +10,18 @@ from wordfish.utils import has_internet_connectivity, get_json
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
 from wordfish.terms import save_relationships
+from wordfish.plugin import generate_job
 
-# REQUIRED WORDNET PYTHON FUNCTIONS
-def extract_text(output_dir):
-    print "Text corpus extraction is not defined for the cattell plugin."
+# REQUIRED WORDFISH FUNCTION
+def go_fish():    
+    generate_job(func="extract_terms",category="terms")
+    generate_job(func="extract_relationships",category="terms")
 
+
+# USER FUNCTIONS
 def get_cattell():
     url = "https://raw.githubusercontent.com/vsoch/traits/master/data/json/cattell_personality_282.json"
     return get_json(url)
-
 
 def get_terms(cattell):
     terms = dict()

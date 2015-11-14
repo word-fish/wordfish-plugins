@@ -25,15 +25,6 @@ import numpy as np
 from Bio import Entrez
 from wordfish.nlp import do_stem
 
-
-def extract_text(output_dir):
-    print "Text extraction is not defined for this plugin."
-def extract_terms(output_dir):
-    print "Term extraction is not defined for this plugin."
-def extract_relationships(output_dir):
-    print "Relationship extraction is not defined for this plugin."
-
-
 # Pubmed
 class Pubmed:
     '''Pubmed: 
