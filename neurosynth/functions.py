@@ -47,10 +47,10 @@ def go_fish():
         os.mkdir(maps_dir)
 
     # jobs to download abstract texts
-    generate_job(func="generate_maps",inputs={"terms":terms,"maps_dir":maps_dir},category="terms",batch_num=100)
+    generate_job(func="generate_maps",inputs={"terms":terms},category="terms",batch_num=100)
     generate_job(func="extract_text",category="corpus",inputs={"pmids":pmids},batch_num=100)
     generate_job(func="extract_terms",category="terms")
-    generate_job(func="extract_relations",inputs={"terms":terms},category="terms",batch_num=100)
+    generate_job(func="extract_relations",inputs={"terms":terms},category="relations",batch_num=100)
 
 # USER FUNCTIONS
 def extract_text(pmids,output_dir):
@@ -85,11 +85,13 @@ def extract_terms(output_dir):
     save_terms(terms,output_dir)
     
 
-def generate_maps(terms):
+def generate_maps(terms,output_dir):
 
     f,d = download_data()
     features = pandas.read_csv(f,sep="\t")  
     database = pandas.read_csv(d,sep="\t")  
+
+    output_dir = "%s/maps" %(output_dir)
 
     print "Deriving pickled maps to extract relationships from..."
     dataset = Dataset(d)
@@ -99,7 +101,8 @@ def generate_maps(terms):
         print "Generating P(term|activation) for term %s, %s of %s" %(term,t,len(terms))
         ids = dataset.get_ids_by_features(term)
         maps = meta.MetaAnalysis(dataset,ids)
-        pickle.dump(maps.images["pFgA_z"],open("%s/%s_pFgA_z.pkl" %(maps_dir,term),"wb"))
+        term_name = term.replace(" ","_")
+        pickle.dump(maps.images["pFgA_z"],open("%s/%s_pFgA_z.pkl" %(output_dir,term_name),"wb"))
 
 
 def extract_relations(terms,output_dir):
@@ -119,7 +122,8 @@ def extract_relations(terms,output_dir):
     image_matrix = pandas.DataFrame(columns=range(228453))
     for t in range(len(allterms)):
         term = terms[t]
-        pickled_map = "%s/%s_pFgA_z.pkl" %(maps_dir,term)
+        term_name = term.replace(" ","_")
+        pickled_map = "%s/%s_pFgA_z.pkl" %(maps_dir,term_name)
         if not os.path.exists(pickled_map):
             print "Generating P(term|activation) for term %s" %(term)
             ids = dataset.get_ids_by_features(term)
@@ -138,7 +142,7 @@ def extract_relations(terms,output_dir):
                 score = pearsonr(image_matrix.loc[term1],image_matrix.loc[term2])[0]
                 tuples.append((term1,term2,score))
 
-    save_relations(terms,output_dir=output_dir,relations=tuples)
+    save_relations(output_dir=output_dir,relations=tuples)
 
 def download_data(destination=None):
     '''download_data
