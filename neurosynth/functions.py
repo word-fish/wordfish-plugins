@@ -11,11 +11,12 @@ from neurosynth.analysis import meta
 from scipy.stats import pearsonr
 from wordfish.vm import download_repo
 from wordfish.utils import untar
-import nibabel as nb
 from nibabel import nifti1
-import pandas
-import numpy
+import nibabel as nb
 import urllib2
+import pandas
+import pickle
+import numpy
 import re
 import os
 import sys
