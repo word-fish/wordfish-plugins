@@ -117,7 +117,6 @@ def extract_relations(terms,output_dir):
     allterms = features.columns.tolist()
     allterms.pop(0)  #pmid
 
-    print "Extracting NeuroSynth relationships for term %s..." %(base_term)
     dataset = Dataset(d)
     dataset.add_features(f)
     image_matrix = pandas.DataFrame(columns=range(228453))
@@ -137,6 +136,7 @@ def extract_relations(terms,output_dir):
     tuples = []
     for t1 in range(len(terms)):
         term1 = terms[t1]
+        print "Extracting NeuroSynth relationships for term %s..." %(term1)
         for t2 in range(len(terms)):
             term2 = terms[t2]
             if t1<t2:
