@@ -51,7 +51,7 @@ def go_fish():
     generate_job(func="generate_maps",inputs={"terms":terms},category="terms",batch_num=100)
     generate_job(func="extract_text",category="corpus",inputs={"pmids":pmids},batch_num=100)
     generate_job(func="extract_terms",category="terms")
-    generate_job(func="extract_relations",inputs={"terms":terms},category="relations",batch_num=100)
+    generate_job(func="extract_relations",inputs={"terms":terms,"maps_dir":maps_dir},category="relations",batch_num=100)
 
 # USER FUNCTIONS
 def extract_text(pmids,output_dir):
@@ -106,7 +106,7 @@ def generate_maps(terms,output_dir):
         pickle.dump(maps.images["pFgA_z"],open("%s/%s_pFgA_z.pkl" %(output_dir,term_name),"wb"))
 
 
-def extract_relations(terms,output_dir):
+def extract_relations(terms,maps_dir,output_dir):
 
     if isinstance(terms,str):
         terms = [terms]
