@@ -9,7 +9,7 @@ from wordfish.utils import has_internet_connectivity, get_json
 # IMPORTS FOR ALL PLUGINS
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
-from wordfish.terms import save_relationships
+from wordfish.terms import save_relations
 from wordfish.plugin import generate_job
 
 # REQUIRED WORDFISH FUNCTION
@@ -43,7 +43,7 @@ def extract_terms(output_dir):
     save_terms(terms,output_dir=output_dir)
 
     
-def extract_relationships(output_dir):
+def extract_relations(output_dir):
 
     cattell = get_cattell()
     terms = get_terms(cattell)
@@ -53,5 +53,4 @@ def extract_relationships(output_dir):
         opposite = (unique_id,term["opposite_id"],"opposite_of")
         tuples.append(opposite) 
 
-    save_relationships(terms,output_dir=output_dir,relationships=tuples)
-
+    save_relations(terms,output_dir=output_dir,relationships=tuples)

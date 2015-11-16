@@ -9,7 +9,7 @@ functions for working [description]
 # IMPORTS FOR ALL PLUGINS
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
-from wordfish.terms import save_relationships
+from wordfish.terms import save_relations
 from wordfish.plugin import generate_job
 
 # REQUIRED WORDFISH FUNCTION
@@ -18,7 +18,7 @@ def go_fish():
     # jobs to download abstract texts
     generate_job(func="extract_text",category="corpus",inputs={"uids",uids},batch_num=100)
     generate_job(func="extract_terms",category="terms")
-    generate_job(func="extract_relationships",category="terms")
+    generate_job(func="extract_relations",category="relations")
 
 
 # USER FUNCTIONS
@@ -62,7 +62,10 @@ def extract_terms(output_dir):
     save_terms(terms,output_dir=home)
 
 
-def extract_relationships(output_dir):
+def extract_relations(uids,output_dir):
+
+    # This function will be called by a job, and must call save_relations
+    # ** ALL USER FUNCTIONS MUST HAVE output_dir as an input
 
     # You should provide a list of tuples, with the
     # first and second items for each tuple corresponding
@@ -71,4 +74,4 @@ def extract_relationships(output_dir):
 
     # Value can be a string or int
     # The terms variable is equivalent to the one needed for extract_terms
-    save_relationships(terms,output_dir=output_dir,relationships=tuples)
+    save_relations(relations=tuples,output_dir=output_dir)

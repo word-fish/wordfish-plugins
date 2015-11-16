@@ -9,13 +9,13 @@ from wordfish.utils import get_json, has_internet_connectivity
 # IMPORTS FOR ALL PLUGINS
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
-from wordfish.terms import save_relationships
+from wordfish.terms import save_relations
 from wordfish.plugin import generate_job
 
 # REQUIRED WORDFISH FUNCTION
 def go_fish():    
     generate_job(func="extract_terms",category="terms")
-    generate_job(func="extract_relationships",category="terms")
+    generate_job(func="extract_relations",category="terms")
 
 
 # USER FUNCTIONS
@@ -29,7 +29,7 @@ def extract_terms(output_dir):
        print "Cannot define fma-nif region terms, no internet connectivity."
 
     
-def extract_relationships(output_dir):
+def extract_relations(output_dir):
 
     if has_internet_connectivity(): 
        tuples = []
@@ -39,7 +39,7 @@ def extract_relationships(output_dir):
            tup = (relation["obj"],relation["sub"],relation["pred"])
            tuples.append(tup)
 
-       save_relationships(terms,output_dir=output_dir,relationships=tuples)
+       save_relations(terms,output_dir=output_dir,relationships=tuples)
     else:
        print "Cannot define fma-nif relationships, no internet connectivity."
 

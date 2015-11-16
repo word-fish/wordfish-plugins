@@ -4,7 +4,7 @@
         "tag": "cattell",
         "corpus": "False",
         "terms": "True",
-        "relationships":"False",
+        "relations":"False",
         "dependencies": {},
         "arguments": "",
         "contributors": ["Vanessa Sochat"], 

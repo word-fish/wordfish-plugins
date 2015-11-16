@@ -23,8 +23,11 @@ import sys
 # IMPORTS FOR ALL PLUGINS
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
-from wordfish.terms import save_relationships
+from wordfish.terms import save_relations
 from wordfish.plugin import generate_job
+from wordfish.utils import wordfish_home
+
+home = wordfish_home()
 
 # REQUIRED WORDFISH FUNCTION
 def go_fish():
@@ -35,11 +38,19 @@ def go_fish():
     pmids = database.id.unique().tolist()
     print "NeuroSynth database has %s unique PMIDs" %(len(pmids))
 
+    # Generate brain maps to extract relationships with
+    terms = features.columns.tolist()
+    terms.pop(0)  #pmid
+    
+    maps_dir = "%s/terms/neurosynth/maps" %(home)
+    if not os.path.exists(maps_dir):
+        os.mkdir(maps_dir)
+
     # jobs to download abstract texts
+    generate_job(func="generate_maps",inputs={"terms":terms,"maps_dir":maps_dir},category="terms",batch_num=100)
     generate_job(func="extract_text",category="corpus",inputs={"pmids":pmids},batch_num=100)
     generate_job(func="extract_terms",category="terms")
-    generate_job(func="extract_relationships",category="terms")
-
+    generate_job(func="extract_relations",inputs={"terms":terms},category="terms",batch_num=100)
 
 # USER FUNCTIONS
 def extract_text(pmids,output_dir):
@@ -74,39 +85,60 @@ def extract_terms(output_dir):
     save_terms(terms,output_dir)
     
 
-def extract_relationships(output_dir):
+def generate_maps(terms):
 
     f,d = download_data()
     features = pandas.read_csv(f,sep="\t")  
     database = pandas.read_csv(d,sep="\t")  
-    terms = features.columns.tolist()
-    terms.pop(0)  #pmid
 
-    relationships = []
-    print "Extracting NeuroSynth relationships..."
+    print "Deriving pickled maps to extract relationships from..."
+    dataset = Dataset(d)
+    dataset.add_features(f)
+    for t in range(len(terms)):
+        term = terms[t]
+        print "Generating P(term|activation) for term %s, %s of %s" %(term,t,len(terms))
+        ids = dataset.get_ids_by_features(term)
+        maps = meta.MetaAnalysis(dataset,ids)
+        pickle.dump(maps.images["pFgA_z"],open("%s/%s_pFgA_z.pkl" %(maps_dir,term),"wb"))
+
+
+def extract_relations(terms,output_dir):
+
+    if isinstance(terms,str):
+        terms = [terms]
+
+    f,d = download_data()
+    features = pandas.read_csv(f,sep="\t")  
+    database = pandas.read_csv(d,sep="\t")  
+    allterms = features.columns.tolist()
+    allterms.pop(0)  #pmid
+
+    print "Extracting NeuroSynth relationships for term %s..." %(base_term)
     dataset = Dataset(d)
     dataset.add_features(f)
     image_matrix = pandas.DataFrame(columns=range(228453))
-    for t in range(len(terms)):
+    for t in range(len(allterms)):
         term = terms[t]
-        print "Parsing term %s, %s of %s" %(term,t,len(terms))
-        ids = dataset.get_ids_by_features(term)
-        maps = meta.MetaAnalysis(dataset,ids)
-        # Let's use reverse inference, unthresholded Z score map
-        image_matrix.loc[term] = maps.images["pFgA_z"]
+        pickled_map = "%s/%s_pFgA_z.pkl" %(maps_dir,term)
+        if not os.path.exists(pickled_map):
+            print "Generating P(term|activation) for term %s" %(term)
+            ids = dataset.get_ids_by_features(term)
+            maps = meta.MetaAnalysis(dataset,ids)
+            pickle.dump(maps.images["pFgA_z"],open(pickled_map,"wb"))
+        map_data = pickle.load(open(pickled_map,"rb"))
+        image_matrix.loc[term] = map_data
 
     sims = pandas.DataFrame(columns=image_matrix.index)
     tuples = []
-    for t1 in range(len(image_matrix.index)):
-        term1 = image_matrix.index[t1]
-        for t2 in range(len(image_matrix.index)):
-            term2 = image_matrix.index[t2]
+    for t1 in range(len(terms)):
+        term1 = terms[t1]
+        for t2 in range(len(terms)):
+            term2 = terms[t2]
             if t1<t2:
                 score = pearsonr(image_matrix.loc[term1],image_matrix.loc[term2])[0]
                 tuples.append((term1,term2,score))
 
-    save_relationships(terms,output_dir=output_dir,relationships=tuples)
-
+    save_relations(terms,output_dir=output_dir,relations=tuples)
 
 def download_data(destination=None):
     '''download_data
@@ -133,6 +165,4 @@ def download_data(destination=None):
     database = "%s/database.txt" %(destination)
     
     return features,database
-
-
 

@@ -8,13 +8,13 @@ from cognitiveatlas.api import get_task, get_concept
 # IMPORTS FOR ALL PLUGINS
 from wordfish.corpus import save_sentences
 from wordfish.terms import save_terms
-from wordfish.terms import save_relationships
+from wordfish.terms import save_relations
 from wordfish.plugin import generate_job
 
 # REQUIRED WORDFISH FUNCTION
 def go_fish():    
     generate_job(func="extract_terms",category="terms")
-    generate_job(func="extract_relationships",category="terms")
+    generate_job(func="extract_relations",category="terms")
 
 
 # USER FUNCTIONS
@@ -38,7 +38,7 @@ def extract_terms(output_dir):
     terms = get_terms()
     save_terms(terms,output_dir=output_dir)
     
-def extract_relationships(output_dir):
+def extract_relations(output_dir):
 
     tuples = []
     terms = get_terms()
@@ -51,4 +51,4 @@ def extract_relationships(output_dir):
                 tup = (concept["id"],relation["id"],relationship) 
                 tuples.append(tup)
 
-    save_relationships(terms,output_dir=output_dir,relationships=tuples)
+    save_relations(terms,output_dir=output_dir,relationships=tuples)

@@ -4,7 +4,7 @@
         "tag": "template",
         "corpus": "False",
         "terms": "True",
-        "relationships":"False",
+        "relations":"False",
         "dependencies": { "python":["pandas"]},
         "arguments": "",
         "contributors": ["Vanessa Sochat","Bob Bilder"], 

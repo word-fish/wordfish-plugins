@@ -4,7 +4,7 @@
         "tag": "template",
         "corpus": "False",
         "terms": "False",
-        "relationships":"False",
+        "relations":"False",
         "dependencies": {
                           "python": [ 
                                      "pythondependency"
