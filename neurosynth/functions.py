@@ -121,7 +121,7 @@ def extract_relations(terms,maps_dir,output_dir):
     dataset.add_features(f)
     image_matrix = pandas.DataFrame(columns=range(228453))
     for t in range(len(allterms)):
-        term = terms[t]
+        term = allterms[t]
         term_name = term.replace(" ","_")
         pickled_map = "%s/%s_pFgA_z.pkl" %(maps_dir,term_name)
         if not os.path.exists(pickled_map):
