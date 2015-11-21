@@ -2,8 +2,8 @@
     {
         "name": "Consortium for Neuropsychiatric Phenomics Questions (CNP)",
         "tag": "template",
-        "corpus": "False",
-        "terms": "True",
+        "corpus": "True",
+        "terms": "False",
         "relations":"False",
         "dependencies": { "python":["pandas"]},
         "arguments": "",
