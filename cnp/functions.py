@@ -24,7 +24,7 @@ def extract_text(output_dir):
     plugin_directory = os.path.abspath(os.path.dirname(__file__))
     questions = pandas.read_csv("%s/cnp_739.tsv" %(plugin_directory),sep="\t")
     for question in questions.iterrows():
-        corpus_input[question[1].question_label] = { "text":question[1].question_text }
+        corpus_input[question[1].question_label] = { "text":question[1].question_text, "labels": [question[1].question_label] }
 
     # Save articles to text files in output folder     
     save_sentences(corpus_input,output_dir=output_dir)
